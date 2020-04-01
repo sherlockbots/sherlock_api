@@ -9,6 +9,7 @@ defmodule SherlockApi.Domain.RestrictWord do
 
   schema "restrict_words" do
     field :word, :string
+
     belongs_to(
       :workspace,
       Workspace,
@@ -25,8 +26,17 @@ defmodule SherlockApi.Domain.RestrictWord do
     |> foreign_key_constraint(:workspace_uuid)
   end
 
-  def get_by_client_id(uuid) do
-    query = from r in RestrictWord, where: r.workspace_uuid == ^uuid
+  def get_by_client_id(client_id) do
+    query = from r in RestrictWord, join: w in Workspace, on: w.uuid == r.workspace_uuid, where: w.client_id == ^client_id, select: r
     Repo.all(query)
+  end
+
+  def get(uuid) do
+    Repo.get(RestrictWord, uuid)
+  end
+
+  def save(workspace_uuid, params) do
+    changeset(%RestrictWord{workspace_uuid: workspace_uuid}, params)
+    |> Repo.insert
   end
 end
