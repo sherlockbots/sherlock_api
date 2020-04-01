@@ -7,5 +7,6 @@ defmodule SherlockApiWeb.Router do
 
   scope "/api", SherlockApiWeb do
     pipe_through :api
+    get "/:uuid/restrict_word", RestrictWordController, :all
   end
 end
