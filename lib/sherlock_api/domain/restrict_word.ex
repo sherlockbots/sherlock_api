@@ -27,7 +27,13 @@ defmodule SherlockApi.Domain.RestrictWord do
   end
 
   def get_by_client_id(client_id) do
-    query = from r in RestrictWord, join: w in Workspace, on: w.uuid == r.workspace_uuid, where: w.client_id == ^client_id, select: r
+    query =
+      from r in RestrictWord,
+        join: w in Workspace,
+        on: w.uuid == r.workspace_uuid,
+        where: w.client_id == ^client_id,
+        select: r
+
     Repo.all(query)
   end
 
@@ -37,6 +43,12 @@ defmodule SherlockApi.Domain.RestrictWord do
 
   def save(workspace_uuid, params) do
     changeset(%RestrictWord{workspace_uuid: workspace_uuid}, params)
-    |> Repo.insert
+    |> Repo.insert()
+  end
+
+  def delete(uuid) do
+    query = from r in RestrictWord, where: r.uuid == ^uuid
+    word = Repo.one!(query)
+    Repo.delete(word)
   end
 end

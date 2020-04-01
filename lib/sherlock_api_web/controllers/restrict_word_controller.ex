@@ -21,4 +21,11 @@ defmodule SherlockApiWeb.RestrictWordController do
     restrict_word = RestrictWord.get(uuid)
     render(conn, "show.json", restrict_word: restrict_word)
   end
+
+  def delete(conn, %{"uuid" => uuid}) do
+    with {:ok, _} = RestrictWord.delete(uuid) do
+      conn
+      |> send_resp(:no_content, "")
+    end
+  end
 end
