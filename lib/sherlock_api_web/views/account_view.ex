@@ -5,6 +5,10 @@ defmodule SherlockApiWeb.AccountView do
     render_many(accounts, SherlockApiWeb.AccountView, "single.json")
   end
 
+  def render("show.json", %{account: account}) do
+    render_one(account, SherlockApiWeb.AccountView, "single.json")
+  end
+
   def render("single.json", %{account: account}) do
     %{
       uuid: account.uuid,

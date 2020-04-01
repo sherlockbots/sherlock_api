@@ -39,4 +39,20 @@ defmodule SherlockApi.Domain.Account do
 
     Repo.all(query)
   end
+
+  def get(uuid) do
+    query = from r in Account, where: r.uuid == ^uuid
+    Repo.one!(query)
+  end
+
+  def save(workspace_uuid, params) do
+    changeset(%Account{workspace_uuid: workspace_uuid}, params)
+    |> Repo.insert()
+  end
+
+  def delete(uuid) do
+    query = from r in Account, where: r.uuid == ^uuid
+    account = Repo.one!(query)
+    Repo.delete(account)
+  end
 end

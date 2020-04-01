@@ -18,7 +18,10 @@ defmodule SherlockApiWeb.Router do
 
     # account controller
 
+    get "/account/:uuid", AccountController, :show
     get "/:client_id/account", AccountController, :all
 
+    delete "/account/:uuid", AccountController, :delete
+    post "/:workspace_uuid/account", AccountController, :create
   end
 end
