@@ -13,7 +13,7 @@ defmodule SherlockApi.Domain.Account do
     field :email, :string
 
     belongs_to(
-      :settings,
+      :workspace,
       Workspace,
       foreign_key: :workspace_uuid,
       references: :uuid,

@@ -1,6 +1,7 @@
 defmodule SherlockApi.Domain.Workspace do
   use SherlockApi.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   alias SherlockApi.Domain.Workspace
   alias SherlockApi.Domain.Account
@@ -43,6 +44,21 @@ defmodule SherlockApi.Domain.Workspace do
 
   def save(params) do
     changeset(%Workspace{}, params)
-    |> Repo.insert
+    |> Repo.insert()
+  end
+
+  @spec get_by_uuid(any) :: any
+  def get_by_uuid(uuid) do
+    query =
+      from w in Workspace,
+        join: a in Account,
+        on: a.workspace_uuid == w.uuid,
+        join: r in RestrictWord,
+        on: r.workspace_uuid == w.uuid,
+        where: w.uuid == ^uuid,
+        preload: [accounts: a, restrict_words: r],
+        select: w
+
+    Repo.one(query)
   end
 end
